@@ -3,14 +3,14 @@
     name="Mr. Saar"
     role="seller"
     vacancy-label="Продавец"
-    img="/images/seller.webp"
+    img="images/seller.webp"
     :items="sellerItems"
   />
   <InventoryGridView
     name="CJ"
     role="customer"
     vacancy-label="Покупатель"
-    img="/images/cj.webp"
+    img="images/cj.webp"
   />
 </template>
 
