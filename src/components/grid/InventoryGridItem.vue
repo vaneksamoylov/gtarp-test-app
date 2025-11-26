@@ -59,7 +59,7 @@
     <UiModal
       v-if="isUserInventory && showDeleteModal"
       title="Удалить предмет"
-      :text="'Вы уверены, что хотите удалить «' + item.name + '» из инвентаря?'"
+      :text="modalText"
       @close="closeDeleteModal"
     >
       <template #actions>
@@ -75,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import TrashIcon from '@/components/icons/TrashIcon.vue';
 import UiButton from '@/components/ui/UiButton.vue';
 import UiModal from '@/components/ui/UiModal.vue';
@@ -89,9 +89,12 @@ const props = defineProps<{
 
 const inventoryStore = useInventoryStore();
 const showDeleteModal = ref(false);
+const modalText = computed(() => 
+  `Вы уверены, что хотите удалить «${props.item.name}» из инвентаря?`
+);
 
 const handleAddToInventory = () => {
-  inventoryStore.addItem({ ...props.item });
+  inventoryStore.addItem(props.item);
 };
 
 const handleIncrease = () => {

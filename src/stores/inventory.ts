@@ -2,12 +2,14 @@ import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import type { InventoryItem } from '@/types/inventory';
 
+const LOCAL_STORAGE_NAME = 'inventory'
+
 export const useInventoryStore = defineStore('inventory', () => {
   const items = ref<InventoryItem[]>([]);
 
   const loadFromStorage = (): boolean => {
     try {
-      const saved = localStorage.getItem('inventory');
+      const saved = localStorage.getItem(LOCAL_STORAGE_NAME);
 
       if (!saved) {
         return false;
@@ -25,7 +27,7 @@ export const useInventoryStore = defineStore('inventory', () => {
     } catch (error) {
       console.error('Failed to load inventory from localStorage:', error);
       try {
-        localStorage.removeItem('inventory');
+        localStorage.removeItem(LOCAL_STORAGE_NAME);
       } catch (removeError) {
         console.error('Failed to remove corrupted inventory data:', removeError);
       }
@@ -35,15 +37,15 @@ export const useInventoryStore = defineStore('inventory', () => {
 
   const saveToStorage = (): boolean => {
     try {
-      localStorage.setItem('inventory', JSON.stringify(items.value));
+      localStorage.setItem(LOCAL_STORAGE_NAME, JSON.stringify(items.value));
       return true;
     } catch (error) {
       console.error('Failed to save inventory to localStorage:', error);
       if (error instanceof DOMException) {
         if (error.name === 'QuotaExceededError') {
-          console.error('localStorage quota exceeded. Cannot save inventory.');
+          console.error('localStorage quota exceeded. Cannot save inventory.', error);
         } else if (error.name === 'SecurityError') {
-          console.error('localStorage access denied. Cannot save inventory.');
+          console.error('localStorage access denied. Cannot save inventory.', error);
         }
       }
       return false;
@@ -128,7 +130,6 @@ export const useInventoryStore = defineStore('inventory', () => {
   return {
     items,
     loadFromStorage,
-    saveToStorage,
     addItem,
     removeItem,
     increaseAmount,

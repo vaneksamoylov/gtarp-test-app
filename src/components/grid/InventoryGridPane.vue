@@ -1,9 +1,12 @@
 <template>
   <div class="flex flex-col w-full h-full max-h-screen bg-sky-800 overflow-hidden">
-    <InventoryAccount :name="name" :vacancy-label="vacancyLabel" :img="img" />
+    <InventoryAccount :name="user?.name ?? 'UserName'" :vacancy-label="vacancyLabel" :img="user?.img ?? ''" />
 
     <div class="flex-1 overflow-y-auto">
-      <template v-if="displayItems.length > 0">
+      <template v-if="isLoading">
+        <UiSpinner />
+      </template>
+      <template v-else-if="displayItems.length > 0">
         <InventoryGridItem
           v-for="item in displayItems"
           :key="item.id"
@@ -40,20 +43,23 @@
 import { computed } from 'vue';
 import InventoryAccount from './InventoryAccount.vue';
 import InventoryGridItem from './InventoryGridItem.vue';
+import UiSpinner from '@/components/ui/UiSpinner.vue';
 import { useInventoryStore } from '@/stores/inventory';
-import type { InventoryItem, InventoryRole } from '@/types/inventory';
+import type { InventoryItem } from '@/types/inventory';
+import type { User } from '@/types/user';
 
 const props = defineProps<{
-  name: string;
-  role: InventoryRole;
-  vacancyLabel: string;
-  img: string;
+  user?: User;
   items?: InventoryItem[];
+  isLoading?: boolean;
 }>();
 
 const inventoryStore = useInventoryStore();
 
-const isUserInventory = computed(() => props.role === 'customer');
+const isUserInventory = computed(() => props.user?.role === 'customer');
+const isLoading = computed(() => props.isLoading ?? false);
+const vacancyLabel = computed(() => props.user?.['vacancy-label'] ?? 'vacancy');
+
 
 const displayItems = computed(() => {
   if (isUserInventory.value) {

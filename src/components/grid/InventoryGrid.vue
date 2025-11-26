@@ -1,80 +1,41 @@
 <template>
-  <InventoryGridView
-    name="Mr. Saar"
-    role="seller"
-    vacancy-label="Продавец"
-    img="images/seller.webp"
+  <InventoryGridPane
+    :user="seller"
     :items="sellerItems"
+    :is-loading="isLoading"
   />
-  <InventoryGridView
-    name="CJ"
-    role="customer"
-    vacancy-label="Покупатель"
-    img="images/cj.webp"
+  <InventoryGridPane
+    :user="customer"
+    :is-loading="isLoading"
   />
 </template>
 
 <script setup lang="ts">
-import InventoryGridView from '@/components/grid/InventoryGridView.vue';
+import { onMounted, ref } from 'vue';
+import { api } from '@/api';
 import type { InventoryItem } from '@/types/inventory';
+import InventoryGridPane from '@/components/grid/InventoryGridPane.vue';
 
-// Тестовые данные для продавца
-const sellerItems: InventoryItem[] = [
-  {
-    id: 'item-pistol',
-    name: 'Пистолет',
-    icon: 'https://cdn-icons-png.flaticon.com/512/2862/2862478.png',
-    weight: 1.2,
-    amount: 1,
-  },
-  {
-    id: 'item-medkit',
-    name: 'Аптечка',
-    icon: 'https://cdn-icons-png.flaticon.com/512/4599/4599153.png',
-    weight: 0.5,
-    amount: 1,
-  },
-  {
-    id: 'item-food',
-    name: 'Еда',
-    icon: 'https://cdn-icons-png.flaticon.com/512/2276/2276931.png',
-    weight: 0.3,
-    amount: 1,
-  },
-  {
-    id: 'item-water',
-    name: 'Вода',
-    icon: 'https://cdn-icons-png.flaticon.com/512/2447/2447774.png',
-    weight: 0.5,
-    amount: 1,
-  },
-  {
-    id: 'item-armor',
-    name: 'Бронежилет',
-    icon: 'https://cdn-icons-png.flaticon.com/512/6227/6227021.png',
-    weight: 3.5,
-    amount: 1,
-  },
-  {
-    id: 'item-ammo',
-    name: 'Патроны',
-    icon: 'https://cdn-icons-png.flaticon.com/512/3857/3857583.png',
-    weight: 0.1,
-    amount: 1,
-  },
-  {
-    id: 'item-knife',
-    name: 'Нож',
-    icon: 'https://cdn-icons-png.flaticon.com/512/2872/2872617.png',
-    weight: 0.8,
-    amount: 1,
-  },
-  {
-    id: 'item-radio',
-    name: 'Рация',
-    icon: 'https://cdn-icons-png.flaticon.com/512/3814/3814416.png',
-    weight: 0.6,
-    amount: 1,
-  },
-];
+const sellerItems = ref<InventoryItem[]>([]);
+const seller = ref();
+const customer = ref();
+const isLoading = ref(true);
+
+onMounted(async () => {
+  try {
+    const [items, sellerData, customerData] = await Promise.all([
+      api.getItems(),
+      api.getSeller(),
+      api.getCustomer(),
+    ]);
+
+    sellerItems.value = items;
+    seller.value = sellerData;
+    customer.value = customerData;
+  } catch (error) {
+    console.error('Failed to load data:', error);
+  } finally {
+    isLoading.value = false;
+  }
+});
 </script>
