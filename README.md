@@ -1,5 +1,86 @@
-# Vue 3 + TypeScript + Vite
+# Инвентарь
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## _Тестовое задание по фронтенду (инвентарь)_
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+[![pages-build-deployment](https://github.com/vaneksamoylov/gtarp-test-app/actions/workflows/pages.yml/badge.svg?branch=main)](https://github.com/vaneksamoylov/gtarp-test-app/actions/workflows/pages.yml)
+
+**Демо:** [https://vaneksamoylov.github.io/gtarp-test-app/](https://vaneksamoylov.github.io/gtarp-test-app/)
+
+## Функции
+
+&check; Список предметов продавца  
+&check; Инвентарь покупателя с сохранением состояния  
+&check; Добавление предмета из списка продавца в инвентарь покупателя  
+&check; Стаканье предметов по `id` (одинаковые предметы увеличивают количество, а не создают новую строку)  
+&check; Увеличение и уменьшение количества предметов в инвентаре  
+&check; Удаление предмета из инвентаря с подтверждением через модальное окно  
+&check; Подсчёт общего количества предметов и суммарного веса  
+&check; Сохранение инвентаря в `localStorage` и восстановление при перезагрузке страницы  
+&check; Адаптивный интерфейс (список/«таблица» на десктопе, более карточный вид на мобильных)  
+
+## Требования (и как они реализованы)
+
+- Реализация на современном стеке: **Vue 3 + TypeScript + Vite**
+- Управление состоянием через **Pinia**
+- Стилизация с помощью **Tailwind CSS**
+- Данные инвентаря хранятся в состоянии приложения и синхронизируются с **`localStorage`**
+- Все основные операции с инвентарём реализованы собственными функциями (без сторонних state-менеджеров, кроме Pinia)
+- Компонентный подход:
+  - отдельные компоненты для списка (`InventoryGrid`, `InventoryGridView`),
+  - элемента списка (`InventoryGridItem`),
+  - шапки аккаунта (`InventoryAccount`),
+  - базовых UI-элементов (`UiButton`, `UiModal`, иконки).
+- Адаптивность для мобильных и десктопных устройств
+
+## Информация
+
+Данный проект реализован в рамках тестового задания на позицию фронтенд-разработчика (интерфейс инвентаря).  
+Инвентарь игрока хранится в Pinia-сторе и автоматически сохраняется в `localStorage`, что обеспечивает восстановление состояния между перезагрузками страницы.
+
+Сборка проекта выполняется с помощью **Vite**: при выполнении `npm run build` выполняется:
+
+- проверка типов через `vue-tsc`,
+- продакшн-сборка Vite с минификацией JavaScript и CSS, tree-shaking и оптимизацией ассетов.
+
+Дополнительной настройки минификации в `vite.config.ts` не требуется — Vite включает её по умолчанию для продакшн-сборки.
+
+## Установка
+
+1. Клонировать репозиторий
+
+```bash
+git clone https://github.com/vaneksamoylov/gtarp-test-app.git
+```
+
+2. Перейти в директорию проекта
+
+```bash
+cd gtarp-test-app
+```
+
+3. Установить зависимости
+
+```bash
+npm install
+```
+
+4. Запуск проекта в режиме разработки
+
+```bash
+npm run dev
+```
+
+5. Сборка проекта для продакшена
+
+```bash
+npm run build
+```
+
+## Tech
+
+- Vue 3 (Composition API)
+- TypeScript
+- Vite
+- Pinia
+- Tailwind CSS
+- localStorage
