@@ -55,13 +55,13 @@ export const useInventoryStore = defineStore('inventory', () => {
   const addItem = (item: InventoryItem): boolean => {
     try {
       const existingItem = items.value.find(i => i.id === item.id);
-
+  
       if (existingItem) {
         existingItem.amount += item.amount;
       } else {
-        items.value.push(item);
+        items.value.push({ ...item });
       }
-
+  
       saveToStorage();
       return true;
     } catch (error) {
