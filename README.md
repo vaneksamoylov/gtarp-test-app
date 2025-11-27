@@ -4,7 +4,7 @@
 
 [![pages-build-deployment](https://github.com/vaneksamoylov/gtarp-test-app/actions/workflows/pages.yml/badge.svg?branch=main)](https://github.com/vaneksamoylov/gtarp-test-app/actions/workflows/pages.yml)
 
-**Демо:** [https://vaneksamoylov.github.io/gtarp-test-app/](https://github.com/vaneksamoylov/gtarp-test-app)
+**Демо:** [https://vaneksamoylov.github.io/gtarp-test-app/](https://vaneksamoylov.github.io/gtarp-test-app/)
 
 ## ✨ Основной функционал
 
